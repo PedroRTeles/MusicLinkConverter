@@ -32,21 +32,27 @@ def get_spotify_track_info(token, track):
     json_data = track_response.json()
 
     artists = json_data['artists']
+    album = json_data['album']
     artist_name = artists[0]['name']
     track_name = json_data['name']
+    album_name = album['name']
 
-    return {'artist': artist_name, 'track': track_name}
+    print('Track: ' + track_name)
+    print('Artist: ' + artist_name)
+    print('Album: ' + album_name)
+
+    return {'artist': artist_name, 'track': track_name, 'album': album_name}
 
 
 def get_deezer_music_link(info):
-    query_value = 'artist:"' + info['artist'] + '" track:"' + info['track'] + '"'
+    query_value = 'artist:"' + info['artist'] + '" track:"' + info['track'] + '" album:"' + info['album'] + '"'
     params = {'q':  query_value}
     deezer_track_response = requests.get('https://api.deezer.com/search', params=params)
     json_data = deezer_track_response.json()
 
     track = json_data['data'][0]
 
-    print(track['link'])
+    print('Deezer link: ' + track['link'])
 
 
 music_url = input('Enter the music URL: ')
