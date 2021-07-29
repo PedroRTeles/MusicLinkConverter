@@ -1,3 +1,5 @@
+import base64
+
 import requests
 import os
 
@@ -20,9 +22,13 @@ def get_spotify_token():
                'Authorization': 'Basic ' + os.environ['SPOTIFY_AUTHORIZATION']}
     data = {'grant_type': 'client_credentials'}
     token_response = requests.post('https://accounts.spotify.com/api/token', data=data, headers=headers)
-    json_data = token_response.json()
 
-    return json_data['access_token']
+    if token_response.status_code == 200:
+        json_data = token_response.json()
+
+        return json_data['access_token']
+
+    return ''
 
 
 def get_spotify_track_info(token, track):
@@ -56,3 +62,29 @@ def get_spotify_music_link(info, token):
     external_urls = items_data['external_urls']
 
     print('Spotify link: ' + external_urls['spotify'])
+
+
+def has_spotify_authorization():
+    return os.environ.__contains__('SPOTIFY_AUTHORIZATION')
+
+
+def configure_authorization():
+    print('You need to inform a Spotify authorization key.')
+    print('To create one access: https://developer.spotify.com/dashboard/')
+    print('and follow the steps to create an app.')
+    print('')
+
+    client_id = input('Enter the Client ID: ')
+    client_secret = input('Enter the Client Secret: ')
+
+    if client_id != '' and client_secret != '':
+        data = client_id + ':' + client_secret
+        base64_bytes = base64.standard_b64encode(data.encode('utf-8'))
+        os.environ['SPOTIFY_AUTHORIZATION'] = str(base64_bytes, 'utf-8')
+        return True
+
+    return False
+
+
+def is_token_valid(token):
+    return token != ''
