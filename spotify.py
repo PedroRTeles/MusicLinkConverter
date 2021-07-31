@@ -78,13 +78,22 @@ def configure_authorization():
     client_secret = input('Enter the Client Secret: ')
 
     if client_id != '' and client_secret != '':
-        data = client_id + ':' + client_secret
-        base64_bytes = base64.standard_b64encode(data.encode('utf-8'))
-        os.environ['SPOTIFY_AUTHORIZATION'] = str(base64_bytes, 'utf-8')
+        generate_spotify_authorization(client_id, client_secret)
         return True
 
     return False
 
 
+def generate_spotify_authorization(client_id, client_secret):
+    data = client_id + ':' + client_secret
+    base64_bytes = base64.standard_b64encode(data.encode('utf-8'))
+    os.environ['SPOTIFY_AUTHORIZATION'] = str(base64_bytes, 'utf-8')
+
+
 def is_token_valid(token):
     return token != ''
+
+
+def token_error_message():
+    print('Could not generate Spotify Token.')
+    print('Please try again.')
