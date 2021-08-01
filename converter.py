@@ -34,7 +34,7 @@ def convert_to_spotify():
 
         link = spotify.get_spotify_music_link(deezer_track_info, spotify_token)
 
-        print('Spotify link: ', link)
+        print(link)
     else:
         token_error_message()
 

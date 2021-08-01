@@ -1,5 +1,12 @@
 import os
 from unittest import TestCase
+from unittest.mock import patch
+from mockito import kwargs
+
+import requests
+from mockito import when
+
+from factory import data_factory
 
 import spotify
 
@@ -56,6 +63,7 @@ class SpotifyTest(TestCase):
         # When
         is_valid = spotify.is_token_valid(invalid_token)
 
+        # Then
         self.assertFalse(is_valid)
 
     def test_when_pass_valid_token_should_return_true(self):
@@ -65,4 +73,31 @@ class SpotifyTest(TestCase):
         # When
         is_valid = spotify.is_token_valid(invalid_token)
 
+        # Then
         self.assertTrue(is_valid)
+
+    def test_when_request_successfully_should_return_access_token(self):
+        # Given
+        os.environ['SPOTIFY_AUTHORIZATION'] = 'test'
+        when(requests).post('https://accounts.spotify.com/api/token', **kwargs).thenReturn(
+            data_factory.mock_success_spotify_token_response()
+        )
+
+        # When
+        token = spotify.get_spotify_token()
+
+        # Then
+        self.assertEquals(token, 'BQAwALn7Six_RhtNu4LWHnffT7Zsw55uKRxsxtrdjbHRvKFINHhBeI4cGQKBBwwmh88l6T9fQHDbbYiw_zI')
+
+    def test_when_request_fails_should_return_empty_token(self):
+        # Given
+        os.environ['SPOTIFY_AUTHORIZATION'] = 'test'
+        when(requests).post('https://accounts.spotify.com/api/token', **kwargs).thenReturn(
+            data_factory.mock_failure_spotify_token_response()
+        )
+
+        # When
+        token = spotify.get_spotify_token()
+
+        # Then
+        self.assertEquals(token, '')
