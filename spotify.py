@@ -43,10 +43,6 @@ def get_spotify_track_info(token, track):
     track_name = json_data['name']
     album_name = album['name']
 
-    print('Track: ' + track_name)
-    print('Artist: ' + artist_name)
-    print('Album: ' + album_name)
-
     return {'artist': artist_name, 'track': track_name, 'album': album_name}
 
 
@@ -61,22 +57,14 @@ def get_spotify_music_link(info, token):
     items_data = tracks['items'][0]
     external_urls = items_data['external_urls']
 
-    print('Spotify link: ' + external_urls['spotify'])
+    return external_urls['spotify']
 
 
 def has_spotify_authorization():
     return os.environ.__contains__('SPOTIFY_AUTHORIZATION')
 
 
-def configure_authorization():
-    print('You need to inform a Spotify authorization key.')
-    print('To create one access: https://developer.spotify.com/dashboard/')
-    print('and follow the steps to create an app.')
-    print('')
-
-    client_id = input('Enter the Client ID: ')
-    client_secret = input('Enter the Client Secret: ')
-
+def configure_authorization(client_id, client_secret):
     if client_id != '' and client_secret != '':
         generate_spotify_authorization(client_id, client_secret)
         return True
@@ -92,8 +80,3 @@ def generate_spotify_authorization(client_id, client_secret):
 
 def is_token_valid(token):
     return token != ''
-
-
-def token_error_message():
-    print('Could not generate Spotify Token.')
-    print('Please try again.')

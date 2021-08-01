@@ -4,6 +4,11 @@ import spotify
 import deezer
 
 
+def token_error_message():
+    print('Could not generate Spotify Token.')
+    print('Please try again.')
+
+
 def convert_to_deezer():
     print('Converting Spotify link to Deezer link...')
 
@@ -15,7 +20,7 @@ def convert_to_deezer():
 
         deezer.get_deezer_music_link(track_info)
     else:
-        spotify.token_error_message()
+        token_error_message()
 
 
 def convert_to_spotify():
@@ -27,9 +32,11 @@ def convert_to_spotify():
         deezer_track_id = deezer.get_deezer_track_id(url)
         deezer_track_info = deezer.get_deezer_info(deezer_track_id)
 
-        spotify.get_spotify_music_link(deezer_track_info, spotify_token)
+        link = spotify.get_spotify_music_link(deezer_track_info, spotify_token)
+
+        print('Spotify link: ', link)
     else:
-        spotify.token_error_message()
+        token_error_message()
 
 
 if __name__ == '__main__':
