@@ -16,7 +16,9 @@ def convert_music():
             print('Artist: ' + track_info['artist'])
             print('Album: ' + track_info['album'])
 
-            deezer.get_deezer_music_link(track_info)
+            link = deezer.get_deezer_music_link(track_info)
+
+            print('Deezer link: ' + link)
         else:
             print('Could not generate Spotify Token.')
             print('Please try again.')
@@ -27,6 +29,10 @@ def convert_music():
         if spotify.is_token_valid(spotify_token):
             deezer_track_id = deezer.get_deezer_track_id(music_url)
             deezer_track_info = deezer.get_deezer_info(deezer_track_id)
+
+            print('Track: ' + deezer_track_info['track'])
+            print('Artist: ' + deezer_track_info['artist'])
+            print('Album: ' + deezer_track_info['album'])
 
             link = spotify.get_spotify_music_link(deezer_track_info, spotify_token)
 

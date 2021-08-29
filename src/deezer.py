@@ -10,7 +10,7 @@ def get_deezer_music_link(info):
 
     track = json_data['data'][0]
 
-    print('Deezer link: ' + track['link'])
+    return track['link']
 
 
 def get_deezer_track_id(deezer_url):
@@ -32,9 +32,5 @@ def get_deezer_info(track_id):
     track_name = json_data['title']
     album_name = album_data['title']
     artist_name = artist_data['name']
-
-    print('Track: ' + track_name)
-    print('Artist: ' + artist_name)
-    print('Album: ' + album_name)
 
     return {'track': track_name, 'artist': artist_name, 'album': album_name}

@@ -7,7 +7,7 @@ from mockito import when
 
 from factory import data_factory
 
-import spotify
+from src import spotify
 
 
 class SpotifyTest(TestCase):
